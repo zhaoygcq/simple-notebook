@@ -1,0 +1,21 @@
+{
+  "name": "simple_notebook",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.0.1",
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.0.0",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "vite": "^2.9.9"
+  }
+}
