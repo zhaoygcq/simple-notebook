@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.1",
+    "md-editor-v3": "^2.1.2",
     "vue": "^3.2.25"
   },
   "devDependencies": {
