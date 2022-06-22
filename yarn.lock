@@ -7,6 +7,13 @@
   resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.18.5.tgz"
   integrity sha512-YZWVaglMiplo7v8f1oMQ5ZPQr0vn7HPeZXxXWsxXJRjGVrzUFn9OxFQl1sb5wzfootjA/yChhW84BV+383FSOw==
 
+"@bytemd/vue-next@^1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@bytemd/vue-next/-/vue-next-1.15.0.tgz#6dc0beae3bbdc266b542c439a118363b3ca08864"
+  integrity sha512-Ka1ZbluUo2uV0QkZnkhhwVi2rzS8C8HNVR71rKE7mjByK3IX2h9pVNmdSiJTgJAQtMfomrgtGSroOk1tt0QEUw==
+  dependencies:
+    bytemd "1.15.0"
+
 "@tauri-apps/api@^1.0.1":
   version "1.0.1"
   resolved "https://registry.npmjs.org/@tauri-apps/api/-/api-1.0.1.tgz"
@@ -74,10 +81,24 @@
     "@tauri-apps/cli-win32-ia32-msvc" "1.0.0"
     "@tauri-apps/cli-win32-x64-msvc" "1.0.0"
 
-"@types/marked@^4.0.3":
-  version "4.0.3"
-  resolved "https://registry.npmjs.org/@types/marked/-/marked-4.0.3.tgz"
-  integrity sha512-HnMWQkLJEf/PnxZIfbm0yGJRRZYYMhb++O9M36UCTA9z53uPvVoSlAwJr3XOpDEryb7Hwl1qAx/MV6YIW1RXxg==
+"@types/codemirror@^5.60.5":
+  version "5.60.5"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-5.60.5.tgz#5b989a3b4bbe657458cf372c92b6bfda6061a2b7"
+  integrity sha512-TiECZmm8St5YxjFUp64LK0c8WU5bxMDt9YaAek1UqUb9swrSCoJhh92fWu1p3mTEqlHjhB5sY7OFBhWroJXZVg==
+  dependencies:
+    "@types/tern" "*"
+
+"@types/estree@*":
+  version "0.0.51"
+  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.51.tgz#cfd70924a25a3fd32b218e5e420e6897e1ac4f40"
+  integrity sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==
+
+"@types/tern@*":
+  version "0.23.4"
+  resolved "https://registry.yarnpkg.com/@types/tern/-/tern-0.23.4.tgz#03926eb13dbeaf3ae0d390caf706b2643a0127fb"
+  integrity sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg==
+  dependencies:
+    "@types/estree" "*"
 
 "@vitejs/plugin-vue@^2.3.3":
   version "2.3.3"
@@ -173,6 +194,13 @@
   version "3.2.37"
   resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.2.37.tgz"
   integrity sha512-4rSJemR2NQIo9Klm1vabqWjD8rs/ZaJSzMxkMNeJS6lHiUjjUeYFbooN19NgFjztubEKh3WlZUeOLVdbbUWHsw==
+
+bytemd@1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/bytemd/-/bytemd-1.15.0.tgz#bfe8cb3579876ba1aa8b54667877185bdc40f97b"
+  integrity sha512-27G6vP4oLuaAEISCs+PnCcrQu4aeUkvkcViSefU0KxqXjmFHzjouqKWgd55S7jZWdNy1GwPAYyzpAR8A7qqxLQ==
+  dependencies:
+    "@types/codemirror" "^5.60.5"
 
 csstype@^2.6.8:
   version "2.6.20"
@@ -340,13 +368,6 @@ magic-string@^0.25.7:
   integrity sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==
   dependencies:
     sourcemap-codec "^1.4.8"
-
-md-editor-v3@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npmjs.org/md-editor-v3/-/md-editor-v3-2.1.2.tgz"
-  integrity sha512-u7ldtHnfGwGH+s5n0vJpcf8LFfhj6buyegy7e1ONAv2fRY6xh7DRpfPcW+l6sJ+qWD3g7WBfRbQhMi5IMj61vQ==
-  dependencies:
-    "@types/marked" "^4.0.3"
 
 nanoid@^3.3.4:
   version "3.3.4"

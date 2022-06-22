@@ -33,7 +33,7 @@ let showItemDetail = () => {
     flex-direction: column;
     font-size: 12px;
     padding: 10px 4px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e1e4e8;
     cursor: pointer;
 }
 .title {
