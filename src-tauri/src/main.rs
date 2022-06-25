@@ -17,6 +17,10 @@ fn main() {
   let context = tauri::generate_context!();
   tauri::Builder::default()
     .menu(get_menu())
+    .on_menu_event(|event| {
+      // 自定义菜单的点击事件
+      println!("你刚才点击了:{:?}", event.menu_item_id());
+    })
     // 监听来自于渲染进程的数据通信
     .invoke_handler(tauri::generate_handler![
       cmd::get_md_in_folder
@@ -46,16 +50,28 @@ pub fn get_menu() -> Menu {
     aboutmetadata
   ));
 
-  let test_menu = Menu::new()
+  let file_menu = Menu::new()
     .add_item(CustomMenuItem::new(
       "open",
       "打开文件夹",
-    ))
+    ).accelerator("CmdOrControl+F"))
     .add_native_item(MenuItem::Separator)
     .add_item(create_item);
+
+  let edit_menu = Menu::new()
+    .add_native_item(MenuItem::Undo)
+    .add_native_item(MenuItem::Redo);
+
+  let window_menu = Menu::new()
+    .add_native_item(MenuItem::Minimize)
+    .add_native_item(MenuItem::Zoom)
+    .add_native_item(MenuItem::Hide)
+    .add_native_item(MenuItem::Quit);
 
   // add all our childs to the menu (order is how they'll appear)
   Menu::new()
     .add_submenu(Submenu::new("", my_app_menu)) // 第一个菜单项代表当前应用，这里的title字段无效
-    .add_submenu(Submenu::new("编辑", test_menu))
+    .add_submenu(Submenu::new("文件", file_menu))
+    .add_submenu(Submenu::new("编辑", edit_menu))
+    .add_submenu(Submenu::new("窗口", window_menu))
 }
