@@ -23,7 +23,9 @@ fn main() {
     })
     // 监听来自于渲染进程的数据通信
     .invoke_handler(tauri::generate_handler![
-      cmd::get_md_in_folder
+      cmd::get_md_in_folder,
+      cmd::create_file,
+      cmd::read_folder
     ])
     .run(context)
     .expect("error while running tauri application");

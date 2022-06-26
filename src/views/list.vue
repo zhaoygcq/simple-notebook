@@ -10,6 +10,10 @@ const showContent = (target) => {
   console.log("查看某个文件内容");
 }
 
+const handlelistShow = (res) => {
+  console.log(res, "=======res");
+}
+
 onMounted(async() => {
   try {
     event.listen("md-list", (res) => {
@@ -31,7 +35,7 @@ onMounted(async() => {
       :create-time="item.createTime"
       @showContent="showContent"
     ></ListItemVue>
-    <EmptyVue v-if="!list.length" />
+    <EmptyVue v-if="!list.length" :showlist="handlelistShow"/>
   </div>
 </template>
 

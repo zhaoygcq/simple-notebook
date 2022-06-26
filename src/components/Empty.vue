@@ -2,15 +2,26 @@
 import { dialog } from '@tauri-apps/api';
 import { ref } from 'vue';
 import DialogVue from './Dialog.vue';
+import { invoke } from '@tauri-apps/api';
+
+const props = defineProps({
+    showlist: Function
+})
 
 const showFolderDialog = async () => {
-    let res = await dialog.open({
+    let dirPath = await dialog.open({
       title: "请选择文件夹",
       defaultPath: "..",
       directory: true
     });
 
     // 发送请求给tauri，让tauri去读取文件
+    let res = invoke("read_folder", {
+        event: dirPath
+    });
+
+    // 通知父组件，更新组件内容
+    emit2list()
 
     console.log(res, "======file checked=====");
 }
@@ -27,9 +38,27 @@ const cancelCreate = () => {
 }
 
 
-const handleCreate = (filename) => {
-    console.log("msg=======", filename);
-    cancelCreate();
+const handleCreate = async (filename) => {
+    try {
+        console.log("msg=======", filename);
+        // 向主进程发送消息，用于创建文件
+        await invoke('create_file', {
+            event: filename
+        })
+        
+        // 文件创建成功，通知父组件更新组件内容
+        emit2list({
+            fileType: 0,
+            data: filename
+        })
+        cancelCreate();
+    } catch(err) {
+
+    }
+}
+
+const emit2list = (res) => {
+    props.showlist(res);
 }
 </script>
 
