@@ -10,7 +10,8 @@ use tauri::{
   Menu,
   MenuItem,
   Submenu,
-  AboutMetadata
+  AboutMetadata,
+  api::dialog::FileDialogBuilder
 };
 
 fn main() {
@@ -18,6 +19,20 @@ fn main() {
   tauri::Builder::default()
     .menu(get_menu())
     .on_menu_event(|event| {
+      let menu_id = event.menu_item_id();
+      if menu_id == "create" {
+        cmd::create_file("Untitled".to_string());
+      } else if menu_id == "open" {
+        // 主进程打开文件选择窗口
+        FileDialogBuilder::new().pick_folder(|folder_path| {
+          // do something with the optional folder path here
+          // the folder path is `None` if the user closed the dialog
+          if let Some(target) = folder_path {
+            println!("folder path is {:?}", target);
+            cmd::read_folder(target.to_str().expect(" ").to_string());
+          }
+        })
+      }
       // 自定义菜单的点击事件
       println!("你刚才点击了:{:?}", event.menu_item_id());
     })
