@@ -12,6 +12,7 @@ const showContent = (target) => {
 
 const handlelistShow = (res) => {
   console.log(res, "=======res");
+  list.push(res.data);
 }
 
 onMounted(async() => {
@@ -30,9 +31,11 @@ onMounted(async() => {
 <template>
   <div>
     <ListItemVue
-      v-for="item in list" 
-      :count="item.count"
+      v-for="item in list"
+      :title="item.title"
       :create-time="item.createTime"
+      :count="item.count"
+      :desc="item.desc"
       @showContent="showContent"
     ></ListItemVue>
     <EmptyVue v-if="!list.length" :showlist="handlelistShow"/>

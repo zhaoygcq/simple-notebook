@@ -1,6 +1,11 @@
-use std::{fs, ffi::OsString};
+use std::{fs, ffi::OsString, time::SystemTime, path::{self, PathBuf}, env::current_dir};
 
-use tauri::{command};
+use tauri::{command, utils::config, Config};
+#[derive(Debug)]
+struct FilesMsg {
+    create_time: SystemTime,
+    count: u64
+}
 
 #[command]
 pub fn get_md_in_folder(event: String) -> Option<String> {
@@ -9,21 +14,23 @@ pub fn get_md_in_folder(event: String) -> Option<String> {
 }
 
 #[command]
-pub fn create_file(event: String) -> Option<String> {
+pub fn create_file(event: String) -> Option<PathBuf> {
     handle_create_file(event)
 }
 
 #[command]
-pub fn read_folder(event: String) -> Option<Vec<OsString>> {
-    handle_read_folder(event)
-}
+// pub fn read_folder(event: String) -> Option<Vec<FilesMsg>> {
+//     handle_read_folder(event)
+// }
 
-fn handle_create_file(path: String) -> Option<String> {
-    let file = fs::File::create(path + ".md");
+fn handle_create_file(target: String) -> Option<PathBuf> {
+    let current_parent = current_dir().expect("");
+    let target_path = path::Path::new(current_parent.to_str()?).join((&target).to_string() + ".md");
+    let file = fs::File::create(&target_path);
 
     match file {
         Ok(_) => {
-            return Some("OK".to_string())
+            return Some(target_path)
         },
         Err(_) => {
             return None;
@@ -31,18 +38,23 @@ fn handle_create_file(path: String) -> Option<String> {
     }
 }
 
-fn handle_read_folder(path: String) -> Option<Vec<OsString>> {
+fn handle_read_folder(path: String) -> Option<Vec<FilesMsg>> {
     let dirs = fs::read_dir(path);
     let mut res = vec![];
     match dirs {
         Ok(dir) => {
             for item in dir {
-                match item {
-                    Ok(entry) => res.push(entry.file_name()),
-                    Err(_) => {}
+                if let Ok(entry) = item {
+                    let meta_data = entry.metadata().expect("");
+                    let create_time = meta_data.created().expect("");
+                    res.push(FilesMsg {
+                        create_time,
+                        count: meta_data.len()
+                    });
                 }
             }
 
+            println!("folder data is {:?}", res);
             return Some(res);
         },
         Err(_) => return None

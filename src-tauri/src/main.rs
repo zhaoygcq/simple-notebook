@@ -29,7 +29,7 @@ fn main() {
           // the folder path is `None` if the user closed the dialog
           if let Some(target) = folder_path {
             println!("folder path is {:?}", target);
-            cmd::read_folder(target.to_str().expect(" ").to_string());
+            // cmd::read_folder(target.to_str().expect(" ").to_string());
           }
         })
       }
@@ -40,7 +40,7 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       cmd::get_md_in_folder,
       cmd::create_file,
-      cmd::read_folder
+      // cmd::read_folder
     ])
     .run(context)
     .expect("error while running tauri application");

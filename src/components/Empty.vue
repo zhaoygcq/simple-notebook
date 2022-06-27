@@ -16,13 +16,12 @@ const showFolderDialog = async () => {
     });
 
     // 发送请求给tauri，让tauri去读取文件
-    let res = invoke("read_folder", {
+    let res = await invoke("read_folder", {
         event: dirPath
     });
 
     // 通知父组件，更新组件内容
-    emit2list()
-
+    // emit2list()
     console.log(res, "======file checked=====");
 }
 
@@ -42,14 +41,18 @@ const handleCreate = async (filename) => {
     try {
         console.log("msg=======", filename);
         // 向主进程发送消息，用于创建文件
-        await invoke('create_file', {
+        // 获取到文件创建的路径
+        let res = await invoke('create_file', {
             event: filename
         })
-        
+        let data = {
+            title: filename,
+            createTime: +new Date()
+        }
         // 文件创建成功，通知父组件更新组件内容
         emit2list({
             fileType: 0,
-            data: filename
+            data
         })
         cancelCreate();
     } catch(err) {

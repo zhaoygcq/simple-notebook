@@ -12,7 +12,8 @@
   "dependencies": {
     "@bytemd/vue-next": "^1.15.0",
     "@tauri-apps/api": "^1.0.1",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#dev"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0",

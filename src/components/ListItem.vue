@@ -2,10 +2,13 @@
 import { computed } from 'vue';
 let props = defineProps({
     count: Number,
-    createTime: Number
+    createTime: Number,
+    desc: String,
+    title: String
 })
 
 let tranformedCreateTime = computed(() => {
+    console.log(props.createTime)
     let date = new Date(props.createTime)
     return date.toLocaleDateString()+ " " + date.toLocaleTimeString();
 })
@@ -17,10 +20,10 @@ let showItemDetail = () => {
 
 <template>
   <div class="list-item" @click="showItemDetail">
-    <p class="title" title="第一篇测试文章第一篇测试文章第一篇测试文章第一篇测试文章">第一篇测试文章第一篇测试文章第一篇测试文章第一篇测试文章</p>
-    <p class="desc">这是一篇测试的文章，这是一篇测试的文章，这是一篇测试的文章，这是一篇测试的文章，这是一篇测试的文章，</p>
+    <p class="title" :title="title">{{title || "Untitled"}}</p>
+    <p class="desc">{{desc || ""}}</p>
     <p class="info">
-        <span>字数{{count}}</span>
+        <span>字数{{count || 0}}</span>
         <span>修改时间:{{tranformedCreateTime}}</span>
     </p>
   </div>
@@ -40,7 +43,7 @@ let showItemDetail = () => {
     margin: 6px;
     font-size: 14px;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
