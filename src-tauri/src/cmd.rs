@@ -1,4 +1,4 @@
-use std::{fs, ffi::OsString, time::SystemTime, path::{self, PathBuf}, env::current_dir};
+use std::{fs, ffi::OsString, time::SystemTime, path::{self, PathBuf}, env::current_dir, string};
 
 use tauri::{command, utils::config, Config};
 #[derive(Debug)]
@@ -16,6 +16,13 @@ pub fn get_md_in_folder(event: String) -> Option<String> {
 #[command]
 pub fn create_file(event: String) -> Option<PathBuf> {
     handle_create_file(event)
+}
+
+#[tauri::command]
+pub fn save_content(filepath: String, content: String) -> Option<String> {
+    println!("filepath: {}======, content: {}====", filepath, content);
+    fs::write(filepath, content).expect("write file error");
+    Some("OK".to_string())
 }
 
 #[command]

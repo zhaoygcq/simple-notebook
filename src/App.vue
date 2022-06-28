@@ -1,14 +1,23 @@
 <script setup>
+import { ref } from 'vue';
 import editorVue from './views/editor.vue';
 import listVue from './views/list.vue';
+
+const currentPath = ref('');
+
+const handleCurrentPath = (path) => {
+  currentPath.value = path;
+  console.log(path, "=====currentPath=======");
+}
 </script>
 
 <template>
   <section class="list">
-    <listVue/>
+    <listVue @itemclick="handleCurrentPath" />
   </section>
   <section class="content">
-    <editorVue/>
+    <editorVue v-if="currentPath" :current-path="currentPath"/>
+    <div v-else></div>
   </section>
 </template>
 

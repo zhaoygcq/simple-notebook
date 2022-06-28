@@ -40,6 +40,7 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       cmd::get_md_in_folder,
       cmd::create_file,
+      cmd::save_content
       // cmd::read_folder
     ])
     .run(context)

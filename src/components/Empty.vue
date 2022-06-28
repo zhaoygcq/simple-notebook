@@ -4,9 +4,7 @@ import { ref } from 'vue';
 import DialogVue from './Dialog.vue';
 import { invoke } from '@tauri-apps/api';
 
-const props = defineProps({
-    showlist: Function
-})
+const emit = defineEmits(['showlist'])
 
 const showFolderDialog = async () => {
     let dirPath = await dialog.open({
@@ -47,7 +45,8 @@ const handleCreate = async (filename) => {
         })
         let data = {
             title: filename,
-            createTime: +new Date()
+            createTime: +new Date(),
+            filePath: res
         }
         // 文件创建成功，通知父组件更新组件内容
         emit2list({
@@ -61,7 +60,7 @@ const handleCreate = async (filename) => {
 }
 
 const emit2list = (res) => {
-    props.showlist(res);
+    emit('showlist', res);
 }
 </script>
 

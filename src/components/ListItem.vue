@@ -13,13 +13,10 @@ let tranformedCreateTime = computed(() => {
     return date.toLocaleDateString()+ " " + date.toLocaleTimeString();
 })
 
-let showItemDetail = () => {
-    console.log("点击左侧菜单栏")
-}
 </script>
 
 <template>
-  <div class="list-item" @click="showItemDetail">
+  <div class="list-item">
     <p class="title" :title="title">{{title || "Untitled"}}</p>
     <p class="desc">{{desc || ""}}</p>
     <p class="info">

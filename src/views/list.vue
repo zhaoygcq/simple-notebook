@@ -3,11 +3,14 @@ import { onMounted, reactive } from 'vue';
 import ListItemVue from '../components/ListItem.vue';
 import EmptyVue from "../components/Empty.vue"
 import { invoke, event } from "@tauri-apps/api";
+
+let emit = defineEmits(['itemclick']);
+
 // 向tauri查询文件列表
 let list = reactive([]);
 
 const showContent = (target) => {
-  console.log("查看某个文件内容");
+  emit('itemclick', target.filePath || "")
 }
 
 const handlelistShow = (res) => {
@@ -32,13 +35,14 @@ onMounted(async() => {
   <div>
     <ListItemVue
       v-for="item in list"
+      :key="item"
       :title="item.title"
       :create-time="item.createTime"
       :count="item.count"
       :desc="item.desc"
-      @showContent="showContent"
+      @click="showContent(item)"
     ></ListItemVue>
-    <EmptyVue v-if="!list.length" :showlist="handlelistShow"/>
+    <EmptyVue v-if="!list.length" @showlist="handlelistShow"/>
   </div>
 </template>
 
