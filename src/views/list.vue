@@ -3,6 +3,7 @@ import { onMounted, reactive } from 'vue';
 import ListItemVue from '../components/ListItem.vue';
 import EmptyVue from "../components/Empty.vue"
 import { invoke, event } from "@tauri-apps/api";
+import { setData, getData } from "../store/store";
 
 let emit = defineEmits(['itemclick']);
 
@@ -13,13 +14,16 @@ const showContent = (target) => {
   emit('itemclick', target.filePath || "")
 }
 
-const handlelistShow = (res) => {
-  console.log(res, "=======res");
+const handlelistShow = async (res) => {
   list.push(res.data);
+  await setData({key: "list", val: res.data})
 }
 
 onMounted(async() => {
   try {
+    let store = await getData("list");
+    if(store) list.push(store);
+    console.log(store, "=========get store");
     event.listen("md-list", (res) => {
       console.log(res, "======res");
       list = res && res.payload.data;

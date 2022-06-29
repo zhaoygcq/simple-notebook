@@ -18,12 +18,20 @@ pub fn create_file(filename:String, folderpath: String) -> Option<PathBuf> {
     handle_create_file(filename, folderpath)
 }
 
-#[tauri::command]
+#[command]
 pub fn save_content(filepath: String, content: String) -> Option<String> {
     println!("filepath: {}======, content: {}====", filepath, content);
     fs::write(filepath, content).expect("write file error");
     Some("OK".to_string())
 }
+
+#[command]
+pub fn get_content(filepath: String) -> Option<String> {
+    println!("filepath: {}======", filepath);
+    let res = fs::read_to_string(filepath).expect("");
+    Some(res)
+}
+
 
 #[command]
 // pub fn read_folder(event: String) -> Option<Vec<FilesMsg>> {

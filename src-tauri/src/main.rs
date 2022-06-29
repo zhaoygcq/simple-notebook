@@ -7,6 +7,8 @@ mod cmd;
 
 use std::{fs::File, env::current_dir};
 
+use tauri_plugin_store::PluginBuilder;
+
 use tauri::{
   CustomMenuItem,
   Menu,
@@ -42,9 +44,11 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       cmd::get_md_in_folder,
       cmd::create_file,
-      cmd::save_content
+      cmd::save_content,
+      cmd::get_content
       // cmd::read_folder
     ])
+    .plugin(PluginBuilder::default().build())
     .run(context)
     .expect("error while running tauri application");
 }

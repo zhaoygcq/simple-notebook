@@ -32,6 +32,19 @@ const handleChange = (val) => {
   console.log("change");
   handleSave(val); 
 }
+
+onMounted(async () => {
+  try {
+    let content = await invoke("get_content", {
+      filepath: props.currentPath
+    });
+
+    if(content) text.value = content;
+    console.log(content, "=========content=======");
+  }catch(e) {
+    console.log("get content error=======", e);
+  }
+})
 </script>
 
 <template>
@@ -42,5 +55,6 @@ const handleChange = (val) => {
 .editor .bytemd {
   height: 100vh;
   text-align: left;
+  border-left: 0;
 }
 </style>

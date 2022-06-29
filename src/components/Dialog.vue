@@ -49,7 +49,7 @@ const cancel = () => {
         </div>
         <div class="form">
             <label>文件夹:</label>
-            <input autofocus @click="showFolderDialog" :value="folderpath" />
+            <input autofocus readonly @click="showFolderDialog" :value="folderpath" />
         </div>
         <p class="error" v-if="errMsg">ERROR:{{errMsg}}</p>
         <div class="btns">
