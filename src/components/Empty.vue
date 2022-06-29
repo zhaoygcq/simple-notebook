@@ -35,14 +35,17 @@ const cancelCreate = () => {
 }
 
 
-const handleCreate = async (filename) => {
+const handleCreate = async ({filename, folderpath}) => {
     try {
         console.log("msg=======", filename);
         // 向主进程发送消息，用于创建文件
         // 获取到文件创建的路径
         let res = await invoke('create_file', {
-            event: filename
+            filename,
+            folderpath
         })
+
+        console.log(res, "=======create--------");
         let data = {
             title: filename,
             createTime: +new Date(),

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { dialog } from '@tauri-apps/api';
 
 let props = defineProps({
     confirm: Function,
@@ -8,14 +9,32 @@ let props = defineProps({
 
 const errMsg = ref("");
 const filename = ref("");
+const folderpath = ref("");
+
 const handleValChange = () => {
     if(!filename.value.trim()) {
         errMsg.value = "不能为空";
         return
     }
-    props.confirm(filename.value);
+    props.confirm({
+        filename: filename.value,
+        folderpath: folderpath.value
+    });
     filename.value = "";
+    folderpath.value = "";
 }
+
+const showFolderDialog = async () => {
+    let dirPath = await dialog.open({
+      title: "请选择文件夹",
+      defaultPath: "..",
+      directory: true
+    });
+
+    folderpath.value = dirPath;
+    console.log(folderpath.value, "======file checked=====");
+}
+
 const cancel = () => {
     filename.value = "";
     props.cancel();
@@ -26,7 +45,11 @@ const cancel = () => {
     <div class="dialog">
         <div class="form">
             <label>文件名:</label>
-            <input autofocus v-model="filename" @change="handleValChange" />
+            <input autofocus v-model="filename" />
+        </div>
+        <div class="form">
+            <label>文件夹:</label>
+            <input autofocus @click="showFolderDialog" :value="folderpath" />
         </div>
         <p class="error" v-if="errMsg">ERROR:{{errMsg}}</p>
         <div class="btns">

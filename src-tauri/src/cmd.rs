@@ -14,8 +14,8 @@ pub fn get_md_in_folder(event: String) -> Option<String> {
 }
 
 #[command]
-pub fn create_file(event: String) -> Option<PathBuf> {
-    handle_create_file(event)
+pub fn create_file(filename:String, folderpath: String) -> Option<PathBuf> {
+    handle_create_file(filename, folderpath)
 }
 
 #[tauri::command]
@@ -30,16 +30,16 @@ pub fn save_content(filepath: String, content: String) -> Option<String> {
 //     handle_read_folder(event)
 // }
 
-fn handle_create_file(target: String) -> Option<PathBuf> {
-    let current_parent = current_dir().expect("");
-    let target_path = path::Path::new(current_parent.to_str()?).join((&target).to_string() + ".md");
+fn handle_create_file(filename: String, folderpath: String) -> Option<PathBuf> {
+    let target_path = path::Path::new(&folderpath).join(filename + ".md");
     let file = fs::File::create(&target_path);
 
     match file {
         Ok(_) => {
             return Some(target_path)
         },
-        Err(_) => {
+        Err(e) => {
+            println!("error create===={}", e);
             return None;
         }
     }

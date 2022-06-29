@@ -5,13 +5,15 @@
 
 mod cmd;
 
+use std::{fs::File, env::current_dir};
+
 use tauri::{
   CustomMenuItem,
   Menu,
   MenuItem,
   Submenu,
   AboutMetadata,
-  api::dialog::FileDialogBuilder
+  api::{dialog::FileDialogBuilder, path::app_dir}
 };
 
 fn main() {
@@ -21,7 +23,7 @@ fn main() {
     .on_menu_event(|event| {
       let menu_id = event.menu_item_id();
       if menu_id == "create" {
-        cmd::create_file("Untitled".to_string());
+        cmd::create_file("Untitled".to_string(), "".to_string());
       } else if menu_id == "open" {
         // 主进程打开文件选择窗口
         FileDialogBuilder::new().pick_folder(|folder_path| {
