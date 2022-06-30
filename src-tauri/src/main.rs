@@ -45,7 +45,7 @@ fn main() {
       cmd::get_md_in_folder,
       cmd::create_file,
       cmd::save_content,
-      cmd::get_content
+      cmd::get_content,
       // cmd::read_folder
     ])
     .plugin(PluginBuilder::default().build())

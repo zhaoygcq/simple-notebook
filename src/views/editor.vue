@@ -1,28 +1,20 @@
 <script setup>
-import { onMounted, ref, } from "vue";
+import { onMounted, ref, watch, watchEffect } from "vue";
 import { Editor } from '@bytemd/vue-next';
 import { event } from "@tauri-apps/api";
 import 'bytemd/dist/index.css';
-import { invoke } from "@tauri-apps/api/tauri";
 import { debounce } from "../utils";
+import { getContentApi, saveContentApi } from "../api/file"
 
 let props = defineProps(['currentPath'])
 
 const text = ref("");
 
-// 设置一个监听函数，用于接收tauri读取的文本内容
-onMounted(() => {
-  console.log("======editor", props.currentPath);
-})
-
 // 保存文件内容
 const handleSave = debounce(async (content) => {
   try {
-    let res = await invoke("save_content", {
-      filepath: props.currentPath,
-      content
-    })
-  }catch(e) {
+    let res = await saveContentApi(props.currentPath, content);
+  } catch (e) {
     console.log(e, "=====save error=====");
   }
 }, 500)
@@ -30,20 +22,29 @@ const handleSave = debounce(async (content) => {
 const handleChange = (val) => {
   text.value = val;
   console.log("change");
-  handleSave(val); 
+  handleSave(val);
+}
+
+const getContent = async (path) => {
+  let content = await getContentApi(path)
+
+  text.value = content;
+  console.log(content, "=========content=======", path);
 }
 
 onMounted(async () => {
+  console.log("======editor", props.currentPath);
   try {
-    let content = await invoke("get_content", {
-      filepath: props.currentPath
-    });
-
-    if(content) text.value = content;
-    console.log(content, "=========content=======");
-  }catch(e) {
+    await getContent(props.currentPath);
+  } catch (e) {
     console.log("get content error=======", e);
   }
+})
+
+watch(() => props.currentPath, async (newContent, oldContent) => {
+  console.log(newContent, "========", oldContent);
+
+  await getContent(props.currentPath);
 })
 </script>
 

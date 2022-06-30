@@ -2,7 +2,7 @@
 import { dialog } from '@tauri-apps/api';
 import { ref } from 'vue';
 import DialogVue from './Dialog.vue';
-import { invoke } from '@tauri-apps/api';
+import { createFileApi, readFolderApi } from "../api/file";
 
 const emit = defineEmits(['showlist'])
 
@@ -14,9 +14,7 @@ const showFolderDialog = async () => {
     });
 
     // 发送请求给tauri，让tauri去读取文件
-    let res = await invoke("read_folder", {
-        event: dirPath
-    });
+    let res = await readFolderApi(dirPath);
 
     // 通知父组件，更新组件内容
     // emit2list()
@@ -40,10 +38,7 @@ const handleCreate = async ({filename, folderpath}) => {
         console.log("msg=======", filename);
         // 向主进程发送消息，用于创建文件
         // 获取到文件创建的路径
-        let res = await invoke('create_file', {
-            filename,
-            folderpath
-        })
+        let res = await createFileApi(filename, folderpath);
 
         console.log(res, "=======create--------");
         let data = {

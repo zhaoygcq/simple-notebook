@@ -2,7 +2,7 @@ use std::{fs, ffi::OsString, time::SystemTime, path::{self, PathBuf}, env::curre
 
 use tauri::{command, utils::config, Config};
 #[derive(Debug)]
-struct FilesMsg {
+pub struct FilesMsg {
     create_time: SystemTime,
     count: u64
 }
