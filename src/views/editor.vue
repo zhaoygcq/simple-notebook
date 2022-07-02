@@ -56,6 +56,6 @@ watch(() => props.currentPath, async (newContent, oldContent) => {
 .editor .bytemd {
   height: 100vh;
   text-align: left;
-  border-left: 0;
+  border: 0;
 }
 </style>

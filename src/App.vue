@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import editorVue from './views/editor.vue';
 import listVue from './views/list.vue';
 import ActivityItemVue from './components/ActivityItem.vue';
+import SearchVue from "./views/Search.vue";
 import { Activities } from './common/constants';
 
 const currentPath = ref('');
@@ -19,6 +20,7 @@ const changeActivityItem = (id) => {
   if(id === checked.value) {
     showList.value = !showList.value;
   } else {
+    !showList.value ? showList.value = true : '';
     checked.value = id;
   }
 }
@@ -36,7 +38,11 @@ const changeActivityItem = (id) => {
     />
   </section>
   <section class="list" v-if="showList">
-    <listVue @itemclick="handleCurrentPath" />
+    <listVue
+      v-show="checked === 'file'"
+      @itemclick="handleCurrentPath"
+    />
+    <SearchVue v-show="checked === 'search'"></SearchVue>
   </section>
   <section class="content">
     <editorVue v-if="currentPath" :current-path="currentPath"/>
@@ -56,7 +62,10 @@ body {
   color: #2c3e50;
   margin: 0;
   display: flex;
-  min-height: 100vh;
+  border-top: 1px solid #e1e4e8;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .activities {

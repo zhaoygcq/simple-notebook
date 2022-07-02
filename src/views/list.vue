@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import ListItemVue from '../components/ListItem.vue';
-import EmptyVue from "../components/Empty.vue";
+import EmptyForList from "../components/EmptyForList.vue";
 import { dialog } from "@tauri-apps/api";
 import { setData, getData } from "../store/store";
 import DialogVue from "../components/Dialog.vue";
@@ -17,7 +17,7 @@ const checkedItem = ref(null);
 
 const showContent = (target) => {
   checkedItem.value = target;
-  emit('itemclick', target.filePath || "");
+  emit('itemclick', target.filePath);
 }
 
 const handleListClick = (evt) => {
@@ -77,7 +77,7 @@ const cancelCreate = () => {
   <div id="list-container" ref="listDom" @dblclick="handleListClick">
     <ListItemVue
       v-for="item in list"
-      :class="item === checkedItem ? 'checked' : ''"
+      :class="checkedItem && item.filePath === checkedItem.filePath ? 'checked' : ''"
       :key="item"
       :title="item.title"
       :create-time="item.createTime"
@@ -85,7 +85,7 @@ const cancelCreate = () => {
       :desc="item.desc"
       @click="showContent(item)"
     ></ListItemVue>
-    <EmptyVue v-if="!list.length" @showlist="handlelistShow"/>
+    <EmptyForList v-if="!list.length" @showlist="handlelistShow"/>
     <DialogVue v-if="showCreateDialog" :confirm="handleCreate" :cancel="cancelCreate"/>
   </div>
 </template>

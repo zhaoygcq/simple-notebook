@@ -1,3 +1,5 @@
+import { getContentApi } from "./api/file";
+import { path } from "@tauri-apps/api";
 export function throttle(func, delay) {
     let prev = 0;
 
@@ -19,4 +21,54 @@ export function debounce(func, delay) {
             func.call(null, content);
         }, delay);
     }
+}
+
+export async function getSearchRes(text, files) {
+    let res = [];
+
+    for(let item of files) {
+        try {
+            let { filePath,  title } = item;
+            let tempPath = filePath.split(path.sep).slice(-3);
+            let originDesc = tempPath.slice(0, 2).join(path.sep);
+            let fileContent = await getContentApi(filePath);
+            // 内容匹配
+            let match = getMatchPosition(text, fileContent);
+            console.log(match);
+            if(match.length > 0) {
+                res.push({
+                    originDesc: originDesc,
+                    origin: tempPath.pop(),
+                    originPath: filePath,
+                    desc: match.map(({start, end}) => {
+                        console.log(start, end, "======fileContent", fileContent);
+                        return fileContent.slice(start, end);
+                    }),
+                    position: match
+                })
+            };
+        } catch(e) {
+            console.log("error============", e);
+        }
+    }
+
+    // 
+    return res;
+}
+
+function getMatchPosition(text, fileContent) {
+    let reg = new RegExp(text, 'g');
+    let match, res = [];
+    while(match = reg.exec(fileContent)) {
+        if(match) {
+            let start = (match.index - 10) < 0 ? 0 : match.index - 10;
+            let end = match.index + text.length + 10 > fileContent.length ? fileContent.length : match.index + text.length + 10; 
+            res.push({
+                start,
+                end,
+            })
+        }
+    }
+
+    return res;
 }
