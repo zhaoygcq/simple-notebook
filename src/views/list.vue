@@ -8,8 +8,7 @@ import { dialog } from '@tauri-apps/api';
 import { createFileApi, readFolderApi, listenDoForFileApi } from "../api/file";
 
 let emit = defineEmits([
-  'itemclick',
-  'toggleListStatus'
+  'itemclick'
 ]);
 
 // 向tauri查询文件列表
@@ -28,7 +27,6 @@ const showContent = (target) => {
 
 // 用于弹出表单，填写创建文件的信息
 const handleListClick = (evt) => {
-  console.log(evt, "=======create file");
   if(!evt || evt.target === listDom.value) {
     showCreateDialog.value = true
   }
@@ -87,10 +85,6 @@ const showFolderDialog = async () => {
     console.log(res, "======file checked=====");
 }
 
-const hideSidebar = () => {
-  emit('toggleListStatus');
-}
-
 // 清空当前工作区域的展示内容
 const emptyWorkspace = async () => {
   await setData({key: 'list', val: []});
@@ -103,7 +97,6 @@ const emptyWorkspace = async () => {
 const ListenResEventMap = {
   open: showFolderDialog,
   create: handleListClick,
-  // 'hide_sidebar': hideSidebar,
   empty: emptyWorkspace
 }
 

@@ -13,7 +13,6 @@ const showList = ref(true);
 
 const handleCurrentPath = (path) => {
   currentPath.value = path;
-  console.log(path, "=====currentPath=======");
 }
 
 const changeActivityItem = (id) => {
@@ -27,7 +26,6 @@ const changeActivityItem = (id) => {
 }
 
 const toggleListStatus = () => {
-  console.log("toggle-list-status is fired=========", showList.value);
   showList.value = !showList.value;
 }
 

@@ -55,7 +55,6 @@ export async function listenDoForFileApi(eventMap) {
     try {
         await listen('do_for_file', async ({event, payload}) => {
             if(eventMap[payload]) await eventMap[payload]();
-            console.log("listen=======", payload, eventMap);
         });
     } catch(e) {
         console.log("listen do for file error", e);
