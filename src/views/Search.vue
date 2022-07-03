@@ -4,6 +4,7 @@ import SearchResItemVue from '../components/SearchResItem.vue';
 import LoadingVue from '../components/Loading.vue';
 import { getSearchRes } from "../utils";
 import { getData } from "../store/store";
+import { debounce } from '../utils';
 
 const searchVal = ref("");
 // 控制loading状态
@@ -14,7 +15,7 @@ const searchRes = reactive({
     list: []
 });
 
-const handleSearchValChange = async () => {
+const handleSearchValChange = debounce(async () => {
     searchRes.list = [];
     if(!searchVal.value) return;
     showSearchRes.value = true;
@@ -26,7 +27,7 @@ const handleSearchValChange = async () => {
     console.log(res, "======search res");
     loadingStatus.value = false;
     searchRes.list = res;
-}
+}, 500)
 </script>
 
 <template>

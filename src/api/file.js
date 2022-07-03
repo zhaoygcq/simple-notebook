@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api";
+import { listen } from "@tauri-apps/api/event";
 
 export async function createFileApi(filename, folderpath) {
     try {
@@ -12,7 +13,6 @@ export async function createFileApi(filename, folderpath) {
         return Promise.reject(e);
     }
 }
-
 
 export async function readFolderApi(dirpath) {
     try {
@@ -48,5 +48,16 @@ export async function getContentApi(filepath) {
         return res;
     }catch(e) {
         return Promise.reject(e);
+    }
+}
+
+export async function listenDoForFileApi(eventMap) {
+    try {
+        await listen('do_for_file', async ({event, payload}) => {
+            if(eventMap[payload]) await eventMap[payload]();
+            console.log("listen=======", payload, eventMap);
+        });
+    } catch(e) {
+        console.log("listen do for file error", e);
     }
 }

@@ -1,74 +1,29 @@
 <script setup>
-import { dialog } from '@tauri-apps/api';
-import { ref } from 'vue';
-import DialogVue from './Dialog.vue';
-import { createFileApi, readFolderApi } from "../api/file";
+const emit = defineEmits([
+    'showlist',
+    'createFile',
+    'openFolder'
+])
 
-const emit = defineEmits(['showlist'])
-
-const showFolderDialog = async () => {
-    let dirPath = await dialog.open({
-      title: "请选择文件夹",
-      defaultPath: "..",
-      directory: true
-    });
-
-    // 发送请求给tauri，让tauri去读取文件
-    let res = await readFolderApi(dirPath);
-
-    // 通知父组件，更新组件内容
-    // emit2list()
-    console.log(res, "======file checked=====");
+const openFolderDialog = async () => {
+    emit('openFolder');
 }
 
-const showCreateDialog = ref(false);
 
 // 创建文件
 const createDoc = () => {
-    showCreateDialog.value = true;
+    emit('createFile');
 }
 
-const cancelCreate = () => {
-    showCreateDialog.value = false;
-}
-
-
-const handleCreate = async ({filename, folderpath}) => {
-    try {
-        console.log("msg=======", filename);
-        // 向主进程发送消息，用于创建文件
-        // 获取到文件创建的路径
-        let res = await createFileApi(filename, folderpath);
-
-        console.log(res, "=======create--------");
-        let data = {
-            title: filename,
-            createTime: +new Date(),
-            filePath: res
-        }
-        // 文件创建成功，通知父组件更新组件内容
-        emit2list({
-            fileType: 0,
-            data
-        })
-        cancelCreate();
-    } catch(err) {
-
-    }
-}
-
-const emit2list = (res) => {
-    emit('showlist', res);
-}
 </script>
 
 <template>
     <div class="empty-container">
         <span>当前暂无文件，你可以选择</span>
-        <span class="open-folder" @click="showFolderDialog">从文件夹导入</span>
+        <span class="open-folder" @click="openFolderDialog">从文件夹导入</span>
         <span class="create" @click="createDoc">新建一个文件</span>
     </div>
-    <DialogVue v-if="showCreateDialog" :confirm="handleCreate" :cancel="cancelCreate"/>
+    <!-- <DialogVue v-if="showCreateDialog" :confirm="handleCreate" :cancel="cancelCreate"/> -->
 </template>
 
 <style>

@@ -5,8 +5,6 @@
 
 mod cmd;
 
-use std::{fs::File, env::current_dir};
-
 use tauri_plugin_store::PluginBuilder;
 
 use tauri::{
@@ -14,8 +12,7 @@ use tauri::{
   Menu,
   MenuItem,
   Submenu,
-  AboutMetadata,
-  api::{dialog::FileDialogBuilder, path::app_dir}
+  AboutMetadata
 };
 
 fn main() {
@@ -24,21 +21,23 @@ fn main() {
     .menu(get_menu())
     .on_menu_event(|event| {
       let menu_id = event.menu_item_id();
-      if menu_id == "create" {
-        cmd::create_file("Untitled".to_string(), "".to_string());
-      } else if menu_id == "open" {
-        // 主进程打开文件选择窗口
-        FileDialogBuilder::new().pick_folder(|folder_path| {
-          // do something with the optional folder path here
-          // the folder path is `None` if the user closed the dialog
-          if let Some(target) = folder_path {
-            println!("folder path is {:?}", target);
-            // cmd::read_folder(target.to_str().expect(" ").to_string());
-          }
-        })
-      }
-      // 自定义菜单的点击事件
+      event.window().emit("do_for_file", menu_id).expect("test");
+      // if menu_id == "create" {
+      //   cmd::create_file("Untitled".to_string(), "".to_string());
+      // } else if menu_id == "open" {
+      //   // 主进程打开文件选择窗口
+      //   FileDialogBuilder::new().pick_folder(|folder_path| {
+      //     // do something with the optional folder path here
+      //     // the folder path is `None` if the user closed the dialog
+      //     if let Some(target) = folder_path {
+      //       println!("folder path is {:?}", target);
+      //       // cmd::read_folder(target.to_str().expect(" ").to_string());
+      //     }
+      //   })
+      // }
+      // // 自定义菜单的点击事件
       println!("你刚才点击了:{:?}", event.menu_item_id());
+
     })
     // 监听来自于渲染进程的数据通信
     .invoke_handler(tauri::generate_handler![
@@ -67,7 +66,9 @@ pub fn get_menu() -> Menu {
   // 创建自定义的菜单项
   #[allow(unused_mut)]
   let mut create_item = CustomMenuItem::new("create", "新建文件").accelerator("CmdOrControl+N");
-    
+  let mut hide_sidebar: CustomMenuItem = CustomMenuItem::new("hide_sidebar", "隐藏/展示侧边栏");
+  let mut open_folder = CustomMenuItem::new("open", "打开文件夹").accelerator("CmdOrControl+F");
+  let mut empty_workspace = CustomMenuItem::new("empty", "清空工作区");
   let my_app_menu = Menu::new()
   .add_native_item(MenuItem::About(
     "Simple Note".to_string(),
@@ -75,10 +76,9 @@ pub fn get_menu() -> Menu {
   ));
 
   let file_menu = Menu::new()
-    .add_item(CustomMenuItem::new(
-      "open",
-      "打开文件夹",
-    ).accelerator("CmdOrControl+F"))
+    .add_item(open_folder)
+    .add_native_item(MenuItem::Separator)
+    .add_item(empty_workspace)
     .add_native_item(MenuItem::Separator)
     .add_item(create_item);
 
@@ -87,6 +87,7 @@ pub fn get_menu() -> Menu {
     .add_native_item(MenuItem::Redo);
 
   let window_menu = Menu::new()
+    .add_item(hide_sidebar)
     .add_native_item(MenuItem::Minimize)
     .add_native_item(MenuItem::Zoom)
     .add_native_item(MenuItem::Hide)
@@ -98,4 +99,9 @@ pub fn get_menu() -> Menu {
     .add_submenu(Submenu::new("文件", file_menu))
     .add_submenu(Submenu::new("编辑", edit_menu))
     .add_submenu(Submenu::new("窗口", window_menu))
+}
+
+
+pub fn send_to_renderer() {
+
 }

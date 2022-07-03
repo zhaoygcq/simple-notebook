@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import editorVue from './views/editor.vue';
 import listVue from './views/list.vue';
 import ActivityItemVue from './components/ActivityItem.vue';
 import SearchVue from "./views/Search.vue";
 import { Activities } from './common/constants';
+import { listenDoForFileApi } from "./api/file";
 
 const currentPath = ref('');
 const checked = ref('file');
@@ -24,6 +25,17 @@ const changeActivityItem = (id) => {
     checked.value = id;
   }
 }
+
+const toggleListStatus = () => {
+  console.log("toggle-list-status is fired=========", showList.value);
+  showList.value = !showList.value;
+}
+
+onMounted(() => {
+  listenDoForFileApi({
+    'hide_sidebar': toggleListStatus,
+  });
+})
 </script>
 
 <template>
@@ -62,7 +74,7 @@ body {
   color: #2c3e50;
   margin: 0;
   display: flex;
-  border-top: 1px solid #e1e4e8;
+  /* border-top: 1px solid #e1e4e8; */
   box-sizing: border-box;
   height: 100vh;
   overflow: hidden;

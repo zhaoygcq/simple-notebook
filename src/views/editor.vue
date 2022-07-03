@@ -27,7 +27,6 @@ const handleChange = (val) => {
 
 const getContent = async (path) => {
   let content = await getContentApi(path)
-
   text.value = content;
   console.log(content, "=========content=======", path);
 }
