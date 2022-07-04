@@ -33,12 +33,19 @@ const handleListClick = (evt) => {
 }
 
 const updateList = async (res) => {
-  state.list.push(res.data);
   let store = await getData("list");
-  if(Array.isArray(store)) {
-    await setData({key: "list", val: [...store, res.data]})
+  let currentData = null;
+  if(Array.isArray(res)) {
+    currentData = res;
   } else {
-    await setData({key: "list", val: [res.data]})  
+    currentData = [ res.data ];
+  }
+
+  state.list = [...state.list, ...currentData];
+  if(Array.isArray(store)) {
+    await setData({key: "list", val: [...store, ...currentData]});
+  } else {
+    await setData({key: "list", val: [...currentData]});  
   }
 }
 
@@ -69,6 +76,14 @@ const cancelCreate = () => {
     showCreateDialog.value = false;
 }
 
+// 清空当前工作区域的展示内容
+const emptyWorkspace = async () => {
+  await setData({key: 'list', val: []});
+  state.list = [];
+  // 清空文本区域的现实内容
+    emit('itemclick', '');
+}
+
 // 打开文件夹
 const showFolderDialog = async () => {
     let dirPath = await dialog.open({
@@ -76,21 +91,14 @@ const showFolderDialog = async () => {
       defaultPath: "..",
       directory: true
     });
-
+    console.log("=======open-folder=====", dirPath)
     // 发送请求给tauri，让tauri去读取文件
     let res = await readFolderApi(dirPath);
-
+    // 清空当前的工作区
+    await emptyWorkspace();
+    await updateList(res);
     // 更新列表项
-
     console.log(res, "======file checked=====");
-}
-
-// 清空当前工作区域的展示内容
-const emptyWorkspace = async () => {
-  await setData({key: 'list', val: []});
-  state.list = [];
-  // 清空文本区域的现实内容
-    emit('itemclick', '');
 }
 
 // 针对主进程发过来的信息作出的响应

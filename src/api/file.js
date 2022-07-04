@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api";
 import { listen } from "@tauri-apps/api/event";
+import { handleFolderRes } from "../utils";
 
 export async function createFileApi(filename, folderpath) {
     try {
@@ -14,13 +15,18 @@ export async function createFileApi(filename, folderpath) {
     }
 }
 
-export async function readFolderApi(dirpath) {
+export async function readFolderApi(dirPath) {
     try {
         let res = await invoke("read_folder", {
             event: dirPath
         });
-
-        return res;
+        // 这里的响应值为一个对象数组，对象数据格式为
+        /**
+         * count: number,
+         * file_path: 完全路径,
+         * update_time: 修改时间
+         */
+        return handleFolderRes(res);
     }catch(e) {
         return Promise.reject(e);
     }
@@ -54,7 +60,12 @@ export async function getContentApi(filepath) {
 export async function listenDoForFileApi(eventMap) {
     try {
         await listen('do_for_file', async ({event, payload}) => {
-            if(eventMap[payload]) await eventMap[payload]();
+            try {
+                console.log(event, payload, "======do_for_file")
+                if(eventMap[payload]) await eventMap[payload]();    
+            } catch(e) {
+                console.log("handle error=======", e);
+            }
         });
     } catch(e) {
         console.log("listen do for file error", e);

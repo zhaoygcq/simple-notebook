@@ -1,10 +1,12 @@
-use std::{fs, time::SystemTime, path::{self, PathBuf}};
+use std::{fs, time::SystemTime, path::{self, PathBuf}, ffi::OsString};
 
 use tauri::{command};
-#[derive(Debug)]
+use serde::{Deserialize, Serialize};
+#[derive(Debug, Deserialize, Serialize)]
 pub struct FilesMsg {
-    create_time: SystemTime,
-    count: u64
+    update_time: SystemTime,
+    count: u64,
+    file_path: String
 }
 
 #[command]
@@ -34,9 +36,9 @@ pub fn get_content(filepath: String) -> Option<String> {
 
 
 #[command]
-// pub fn read_folder(event: String) -> Option<Vec<FilesMsg>> {
-//     handle_read_folder(event)
-// }
+pub fn read_folder(event: String) -> Option<Vec<FilesMsg>> {
+    handle_read_folder(event)
+}
 
 fn handle_create_file(filename: String, folderpath: String) -> Option<PathBuf> {
     let target_path = path::Path::new(&folderpath).join(filename + ".md");
@@ -61,15 +63,17 @@ fn handle_read_folder(path: String) -> Option<Vec<FilesMsg>> {
             for item in dir {
                 if let Ok(entry) = item {
                     let meta_data = entry.metadata().expect("");
-                    let create_time = meta_data.created().expect("");
+                    let update_time = meta_data.modified().expect("");
+                    let file_path = entry.path().display().to_string();
                     res.push(FilesMsg {
-                        create_time,
-                        count: meta_data.len()
+                        update_time,
+                        count: meta_data.len(),
+                        file_path 
                     });
+                    println!("========{:?}", meta_data);
                 }
             }
 
-            println!("folder data is {:?}", res);
             return Some(res);
         },
         Err(_) => return None

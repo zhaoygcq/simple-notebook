@@ -45,7 +45,7 @@ fn main() {
       cmd::create_file,
       cmd::save_content,
       cmd::get_content,
-      // cmd::read_folder
+      cmd::read_folder
     ])
     .plugin(PluginBuilder::default().build())
     .run(context)
@@ -78,9 +78,9 @@ pub fn get_menu() -> Menu {
   let file_menu = Menu::new()
     .add_item(open_folder)
     .add_native_item(MenuItem::Separator)
-    .add_item(empty_workspace)
+    .add_item(create_item)
     .add_native_item(MenuItem::Separator)
-    .add_item(create_item);
+    .add_item(empty_workspace);
 
   let edit_menu = Menu::new()
     .add_native_item(MenuItem::Undo)
@@ -99,9 +99,4 @@ pub fn get_menu() -> Menu {
     .add_submenu(Submenu::new("文件", file_menu))
     .add_submenu(Submenu::new("编辑", edit_menu))
     .add_submenu(Submenu::new("窗口", window_menu))
-}
-
-
-pub fn send_to_renderer() {
-
 }

@@ -5,7 +5,7 @@ export function throttle(func, delay) {
 
     return (content) => {
         let now = +new Date();
-        if(now - prev >= delay) {
+        if (now - prev >= delay) {
             func.call(null, content);
             prev = now;
         }
@@ -16,38 +16,68 @@ export function debounce(func, delay) {
     let timer = null;
 
     return (content) => {
-        if(timer) clearTimeout(timer);
+        if (timer) clearTimeout(timer);
         timer = setTimeout(() => {
             func.call(null, content);
         }, delay);
     }
 }
 
+/**
+    * count: number,
+    * file_path: 完全路径,
+    * update_time: 修改时间
+*/
+export function handleFolderRes(res) {
+    console.log(res, "=======");
+    const MdReg = /\.md$/;
+    if (!res.length) {
+        return res;
+    }
+    let result = [];
+    for (let val of res) {
+        let { count, file_path: filePath, update_time } = val;
+        let title = filePath.split(path.sep).pop();
+        console.log(title, path.sep);
+        let createTime = update_time['secs_since_epoch'];
+        if (!MdReg.test(title)) continue;
+        title = title.replace(MdReg, "");
+        result.push({
+            count,
+            filePath,
+            createTime,
+            title
+        })
+    }
+
+    return result;
+}
+
 export async function getSearchRes(text, files) {
     let res = [];
 
-    for(let item of files) {
+    for (let item of files) {
         try {
-            let { filePath,  title } = item;
+            let { filePath, title } = item;
             let tempPath = filePath.split(path.sep).slice(-3);
             let originDesc = tempPath.slice(0, 2).join(path.sep);
             let fileContent = await getContentApi(filePath);
             // 内容匹配
             let match = getMatchPosition(text, fileContent);
             console.log(match);
-            if(match.length > 0) {
+            if (match.length > 0) {
                 res.push({
                     originDesc: originDesc,
                     origin: tempPath.pop(),
                     originPath: filePath,
-                    desc: match.map(({start, end}) => {
+                    desc: match.map(({ start, end }) => {
                         console.log(start, end, "======fileContent", fileContent);
                         return fileContent.slice(start, end);
                     }),
                     position: match
                 })
             };
-        } catch(e) {
+        } catch (e) {
             console.log("error============", e);
         }
     }
@@ -59,10 +89,10 @@ export async function getSearchRes(text, files) {
 function getMatchPosition(text, fileContent) {
     let reg = new RegExp(text, 'g');
     let match, res = [];
-    while(match = reg.exec(fileContent)) {
-        if(match) {
+    while (match = reg.exec(fileContent)) {
+        if (match) {
             let start = (match.index - 10) < 0 ? 0 : match.index - 10;
-            let end = match.index + text.length + 10 > fileContent.length ? fileContent.length : match.index + text.length + 10; 
+            let end = match.index + text.length + 10 > fileContent.length ? fileContent.length : match.index + text.length + 10;
             res.push({
                 start,
                 end,
