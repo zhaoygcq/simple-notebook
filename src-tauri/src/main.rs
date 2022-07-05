@@ -22,20 +22,7 @@ fn main() {
     .on_menu_event(|event| {
       let menu_id = event.menu_item_id();
       event.window().emit("do_for_file", menu_id).expect("test");
-      // if menu_id == "create" {
-      //   cmd::create_file("Untitled".to_string(), "".to_string());
-      // } else if menu_id == "open" {
-      //   // 主进程打开文件选择窗口
-      //   FileDialogBuilder::new().pick_folder(|folder_path| {
-      //     // do something with the optional folder path here
-      //     // the folder path is `None` if the user closed the dialog
-      //     if let Some(target) = folder_path {
-      //       println!("folder path is {:?}", target);
-      //       // cmd::read_folder(target.to_str().expect(" ").to_string());
-      //     }
-      //   })
-      // }
-      // // 自定义菜单的点击事件
+      // 自定义菜单的点击事件
       println!("你刚才点击了:{:?}", event.menu_item_id());
 
     })
@@ -65,10 +52,10 @@ pub fn get_menu() -> Menu {
   
   // 创建自定义的菜单项
   #[allow(unused_mut)]
-  let mut create_item = CustomMenuItem::new("create", "新建文件").accelerator("CmdOrControl+N");
-  let mut hide_sidebar: CustomMenuItem = CustomMenuItem::new("hide_sidebar", "隐藏/展示侧边栏");
-  let mut open_folder = CustomMenuItem::new("open", "打开文件夹").accelerator("CmdOrControl+F");
-  let mut empty_workspace = CustomMenuItem::new("empty", "清空工作区");
+  let mut create_item = CustomMenuItem::new("create", "New File").accelerator("CmdOrControl+N");
+  let mut hide_sidebar: CustomMenuItem = CustomMenuItem::new("hide_sidebar", "Hide/Show the sidebar");
+  let mut open_folder = CustomMenuItem::new("open", "Open Folder").accelerator("CmdOrControl+F");
+  let mut empty_workspace = CustomMenuItem::new("empty", "Remove workspace");
   let my_app_menu = Menu::new()
   .add_native_item(MenuItem::About(
     "Simple Note".to_string(),
@@ -84,7 +71,12 @@ pub fn get_menu() -> Menu {
 
   let edit_menu = Menu::new()
     .add_native_item(MenuItem::Undo)
-    .add_native_item(MenuItem::Redo);
+    .add_native_item(MenuItem::Redo)
+    .add_native_item(MenuItem::Separator)
+    .add_native_item(MenuItem::Cut)
+    .add_native_item(MenuItem::Copy)
+    .add_native_item(MenuItem::Paste)
+    .add_native_item(MenuItem::SelectAll);
 
   let window_menu = Menu::new()
     .add_item(hide_sidebar)
@@ -96,7 +88,7 @@ pub fn get_menu() -> Menu {
   // add all our childs to the menu (order is how they'll appear)
   Menu::new()
     .add_submenu(Submenu::new("", my_app_menu)) // 第一个菜单项代表当前应用，这里的title字段无效
-    .add_submenu(Submenu::new("文件", file_menu))
-    .add_submenu(Submenu::new("编辑", edit_menu))
-    .add_submenu(Submenu::new("窗口", window_menu))
+    .add_submenu(Submenu::new("File", file_menu))
+    .add_submenu(Submenu::new("Edit", edit_menu))
+    .add_submenu(Submenu::new("Window", window_menu))
 }
