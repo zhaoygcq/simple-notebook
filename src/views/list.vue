@@ -33,6 +33,7 @@ const handleListClick = (evt) => {
 }
 
 const updateList = async (res) => {
+  console.log(res, "======updateList=======");
   let store = await getData("list");
   let currentData = null;
   if(Array.isArray(res)) {

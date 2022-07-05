@@ -1,10 +1,10 @@
-use std::{fs, time::SystemTime, path::{self, PathBuf}, ffi::OsString};
+use std::{fs, time::{SystemTime, UNIX_EPOCH}, path::{self, PathBuf}, ffi::OsString};
 
 use tauri::{command};
 use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FilesMsg {
-    update_time: SystemTime,
+    update_time: i64,
     count: u64,
     file_path: String
 }
@@ -64,13 +64,17 @@ fn handle_read_folder(path: String) -> Option<Vec<FilesMsg>> {
                 if let Ok(entry) = item {
                     let meta_data = entry.metadata().expect("");
                     let update_time = meta_data.modified().expect("");
+                    let since_the_epoch = update_time.duration_since(UNIX_EPOCH).expect("get timestamp error");
+                    let timestamp = since_the_epoch.as_secs() as i64 * 1000i64 + (since_the_epoch.subsec_nanos() as f64 / 1_000_000.0) as i64;
+                    // let ms = update_time.since_the_epoch.as_secs() as i64 * 1000i64 + (since_the_epoch.subsec_nanos() as f64 / 1_000_000.0) as i64;
                     let file_path = entry.path().display().to_string();
+                    
+                    println!("========{:?}, ========{:?}", meta_data, timestamp);
                     res.push(FilesMsg {
-                        update_time,
+                        update_time: timestamp,
                         count: meta_data.len(),
                         file_path 
                     });
-                    println!("========{:?}", meta_data);
                 }
             }
 

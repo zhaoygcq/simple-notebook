@@ -36,10 +36,8 @@ export function handleFolderRes(res) {
     }
     let result = [];
     for (let val of res) {
-        let { count, file_path: filePath, update_time } = val;
+        let { count, file_path: filePath, update_time: createTime } = val;
         let title = filePath.split(path.sep).pop();
-        console.log(title, path.sep);
-        let createTime = update_time['secs_since_epoch'];
         if (!MdReg.test(title)) continue;
         title = title.replace(MdReg, "");
         result.push({
