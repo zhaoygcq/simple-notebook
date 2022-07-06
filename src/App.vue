@@ -47,12 +47,17 @@ onMounted(() => {
       @click="changeActivityItem(item.id)"
     />
   </section>
-  <section class="list" v-if="showList">
+  <section class="list" v-show="showList">
     <listVue
       v-show="checked === 'file'"
       @itemclick="handleCurrentPath"
     />
-    <SearchVue v-show="checked === 'search'"></SearchVue>
+    <!-- 搜索区域 -->
+    <SearchVue
+      v-show="checked === 'search'"
+      @itemclick="handleCurrentPath"
+    />
+    <!-- 提纲区域 -->
   </section>
   <section class="content">
     <editorVue v-if="currentPath" :current-path="currentPath"/>

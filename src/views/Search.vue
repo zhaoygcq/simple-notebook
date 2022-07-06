@@ -6,6 +6,8 @@ import { getSearchRes } from "../utils";
 import { getData } from "../store/store";
 import { debounce } from '../utils';
 
+const emit = defineEmits(['itemClick']);
+
 const searchVal = ref("");
 // 控制loading状态
 const loadingStatus = ref(false);
@@ -28,6 +30,13 @@ const handleSearchValChange = debounce(async () => {
     loadingStatus.value = false;
     searchRes.list = res;
 }, 500)
+
+
+// 搜索内容点击事件
+const handleSearchItemClick = (item) => {
+    console.log("=======search item click", item);
+    emit('itemclick', item.originPath);
+}
 </script>
 
 <template>
@@ -46,6 +55,7 @@ const handleSearchValChange = debounce(async () => {
                 :desc="item.desc"
                 :origin="item.origin"
                 :origin-desc="item.originDesc"
+                @click="handleSearchItemClick(item)"
             />
             <p class="no-res" v-if="!searchRes.list.length">暂未搜索到结果</p>
         </div>

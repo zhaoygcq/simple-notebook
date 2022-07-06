@@ -31,6 +31,7 @@ p {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid #e1e4e8;
+    cursor: pointer;
 }
 
 .title {

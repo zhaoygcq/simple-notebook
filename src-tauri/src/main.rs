@@ -55,7 +55,7 @@ pub fn get_menu() -> Menu {
   let mut create_item = CustomMenuItem::new("create", "New File").accelerator("CmdOrControl+N");
   let mut hide_sidebar: CustomMenuItem = CustomMenuItem::new("hide_sidebar", "Hide/Show the sidebar");
   let mut open_folder = CustomMenuItem::new("open", "Open Folder").accelerator("CmdOrControl+F");
-  let mut empty_workspace = CustomMenuItem::new("empty", "Remove workspace");
+  let mut empty_workspace = CustomMenuItem::new("empty", "Remove workspace").accelerator("CmdOrControl+R");
   let my_app_menu = Menu::new()
   .add_native_item(MenuItem::About(
     "Simple Note".to_string(),
