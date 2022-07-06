@@ -1,11 +1,11 @@
 [package]
-name = "app"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
-default-run = "app"
+name = "simple_notebook"
+version = "0.0.1"
+description = "a md editor built by vue3 and tauri"
+authors = ["zhaoygcq"]
+license = "MIT"
+repository = "https://github.com/zhaoygcq/simple-notebook"
+default-run = "simple_notebook"
 edition = "2021"
 rust-version = "1.57"
 
