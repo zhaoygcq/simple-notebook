@@ -146,6 +146,7 @@ onMounted(async() => {
 <style scoped>
 #list-container {
   height: 100%;
+  overflow-y: auto;
 }
 
 .checked {
