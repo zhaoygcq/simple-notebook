@@ -1,7 +1,7 @@
 {
-  "name": "simple_notebook",
+  "name": "simple-notebook",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -18,7 +18,7 @@
     "@bytemd/vue-next": "^1.15.0",
     "@tauri-apps/api": "^1.0.1",
     "highlight.js": "^11.5.1",
-    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#dev",
+    "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store#dev",
     "vue": "^3.2.25"
   },
   "devDependencies": {

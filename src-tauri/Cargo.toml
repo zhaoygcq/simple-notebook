@@ -1,11 +1,11 @@
 [package]
-name = "simple_notebook"
+name = "simple-notebook"
 version = "0.0.1"
 description = "a md editor built by vue3 and tauri"
 authors = ["zhaoygcq"]
 license = "MIT"
 repository = "https://github.com/zhaoygcq/simple-notebook"
-default-run = "simple_notebook"
+default-run = "simple-notebook"
 edition = "2021"
 rust-version = "1.57"
 

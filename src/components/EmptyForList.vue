@@ -28,11 +28,12 @@ const createDoc = () => {
 
 <style>
 .empty-container {
-    height: 100%;
-    padding: 45vh 10px;
     font-size: 14px;
     display: flex;
     flex-direction: column;
+    position: absolute;
+    top: 50%;
+    translate: 10% -50%;
 }
 
 .open-folder,

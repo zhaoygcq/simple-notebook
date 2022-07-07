@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "simple_notebook",
+    "productName": "simple-notebook",
     "version": "0.0.1"
   },
   "tauri": {
