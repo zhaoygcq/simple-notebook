@@ -1,5 +1,9 @@
 name: "test-on-pr"
-
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   test-tauri:
     strategy:
