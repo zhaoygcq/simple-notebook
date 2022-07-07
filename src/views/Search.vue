@@ -7,7 +7,6 @@ import { getData } from "../store/store";
 import { debounce } from '../utils';
 
 const emit = defineEmits(['itemClick']);
-
 const searchVal = ref("");
 // 控制loading状态
 const loadingStatus = ref(false);

@@ -1,7 +1,8 @@
-use std::{fs, time::{SystemTime, UNIX_EPOCH}, path::{self, PathBuf}, ffi::OsString};
+use std::{fs, time::UNIX_EPOCH, path::{self, PathBuf}};
 
 use tauri::{command};
 use serde::{Deserialize, Serialize};
+// 自定义结构体，并需要将该结构体作为返回值时，需要derive：Deserialize、Serialize
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FilesMsg {
     update_time: i64,
@@ -22,14 +23,12 @@ pub fn create_file(filename:String, folderpath: String) -> Option<PathBuf> {
 
 #[command]
 pub fn save_content(filepath: String, content: String) -> Option<String> {
-    println!("filepath: {}======, content: {}====", filepath, content);
     fs::write(filepath, content).expect("write file error");
     Some("OK".to_string())
 }
 
 #[command]
 pub fn get_content(filepath: String) -> Option<String> {
-    println!("filepath: {}======", filepath);
     let res = fs::read_to_string(filepath).expect("");
     Some(res)
 }
@@ -69,7 +68,6 @@ fn handle_read_folder(path: String) -> Option<Vec<FilesMsg>> {
                     // let ms = update_time.since_the_epoch.as_secs() as i64 * 1000i64 + (since_the_epoch.subsec_nanos() as f64 / 1_000_000.0) as i64;
                     let file_path = entry.path().display().to_string();
                     
-                    println!("========{:?}, ========{:?}", meta_data, timestamp);
                     res.push(FilesMsg {
                         update_time: timestamp,
                         count: meta_data.len(),

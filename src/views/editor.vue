@@ -1,13 +1,20 @@
 <script setup>
 import { onMounted, ref, watch, watchEffect } from "vue";
 import { Editor } from '@bytemd/vue-next';
-import { event } from "@tauri-apps/api";
-import 'bytemd/dist/index.css';
+import math from "@bytemd/plugin-math";
+import highlight from "@bytemd/plugin-highlight";
+import mediumZoom from "@bytemd/plugin-medium-zoom";
+import gemoji from "@bytemd/plugin-gemoji";
+import gfm from "@bytemd/plugin-gfm";
 import { debounce } from "../utils";
 import { getContentApi, saveContentApi } from "../api/file"
 
-let props = defineProps(['currentPath'])
 
+import 'bytemd/dist/index.css';
+import 'highlight.js/styles/vs.css';
+
+let props = defineProps(['currentPath'])
+const plugins = [math(), highlight(), gfm(), gemoji(), mediumZoom()];
 const text = ref("");
 
 // 保存文件内容
@@ -48,7 +55,7 @@ watch(() => props.currentPath, async (newContent, oldContent) => {
 </script>
 
 <template>
-  <Editor class="editor" :value="text" @change="handleChange" />
+  <Editor :plugins="plugins" class="editor" :value="text" @change="handleChange" />
 </template>
 
 <style>
