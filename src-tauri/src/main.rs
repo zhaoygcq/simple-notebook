@@ -87,7 +87,7 @@ pub fn get_menu() -> Menu {
 
   // add all our childs to the menu (order is how they'll appear)
   Menu::new()
-    .add_submenu(Submenu::new("", my_app_menu)) // 第一个菜单项代表当前应用，这里的title字段无效
+    .add_submenu(Submenu::new("About", my_app_menu)) // 第一个菜单项代表当前应用，这里的title字段无效
     .add_submenu(Submenu::new("File", file_menu))
     .add_submenu(Submenu::new("Edit", edit_menu))
     .add_submenu(Submenu::new("Window", window_menu))
