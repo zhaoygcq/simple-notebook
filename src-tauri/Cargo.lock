@@ -2475,7 +2475,7 @@ dependencies = [
 
 [[package]]
 name = "simple-notebook"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "serde",
  "serde_json",

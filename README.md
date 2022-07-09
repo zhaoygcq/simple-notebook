@@ -15,3 +15,7 @@ npm run tauri:dev
 ```
 npm run tauri:build
 ```
+
+## 遗留问题
+- 如何加载本地图片？
+- 如何导出pdf
