@@ -29,8 +29,11 @@ pub fn save_content(filepath: String, content: String) -> Option<String> {
 
 #[command]
 pub fn get_content(filepath: String) -> Option<String> {
-    let res = fs::read_to_string(filepath).expect("");
-    Some(res)
+    let res = fs::read_to_string(filepath);
+    match res {
+        Ok(content) => Some(content),
+        Err(_) => None
+    }
 }
 
 

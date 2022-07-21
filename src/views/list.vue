@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import ListItemVue from '../components/ListItem.vue';
 import EmptyForList from "../components/EmptyForList.vue";
-import { setData, getData } from "../store/store";
+import { setData, getData, StoreKey } from "../store/store";
 import DialogVue from "../components/Dialog.vue";
 import { dialog } from '@tauri-apps/api';
 import { createFileApi, readFolderApi, listenDoForFileApi } from "../api/file";
@@ -34,7 +34,7 @@ const handleListClick = (evt) => {
 
 const updateList = async (res) => {
   console.log(res, "======updateList=======");
-  let store = await getData("list");
+  let store = await getData(StoreKey);
   let currentData = null;
   if(Array.isArray(res)) {
     currentData = res;
@@ -42,11 +42,13 @@ const updateList = async (res) => {
     currentData = [ res.data ];
   }
 
-  state.list = [...state.list, ...currentData];
+  // 设置当前新建文本为选中项
+  checkedItem.value = res.data;
+  state.list = [ ...currentData, ...state.list];
   if(Array.isArray(store)) {
-    await setData({key: "list", val: [...store, ...currentData]});
+    await setData({key: StoreKey, val: [...currentData, ...store]});
   } else {
-    await setData({key: "list", val: [...currentData]});  
+    await setData({key: StoreKey, val: [...currentData]});  
   }
 }
 
@@ -79,7 +81,7 @@ const cancelCreate = () => {
 
 // 清空当前工作区域的展示内容
 const emptyWorkspace = async () => {
-  await setData({key: 'list', val: []});
+  await setData({key: StoreKey, val: []});
   state.list = [];
   // 清空文本区域的现实内容
     emit('itemclick', '');
@@ -112,7 +114,7 @@ const ListenResEventMap = {
 
 onMounted(async() => {
   try {
-    let store = await getData("list");
+    let store = await getData(StoreKey);
     if(store) state.list = store;
     listenDoForFileApi(ListenResEventMap);
   } catch(e) {

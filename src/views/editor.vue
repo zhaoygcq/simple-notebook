@@ -9,7 +9,8 @@ import gfm from "@bytemd/plugin-gfm";
 import pdf from "./index";
 import { debounce } from "../utils";
 import { getContentApi, saveContentApi } from "../api/file"
-
+import { message } from '@tauri-apps/api/dialog';
+import { removeItem, StoreKey } from "../store/store";
 
 import 'bytemd/dist/index.css';
 import 'highlight.js/styles/vs.css';
@@ -39,8 +40,16 @@ const handleChange = (val) => {
   handleSave(val);
 }
 
-const getContent = async (path) => {
+const getContent = async (path) => {  
   let content = await getContentApi(path)
+  if(content === null) {
+    // 提示当前文件已经不存在了，并且需要从缓存中删除
+    await message('File not found', { title: 'Simple-notebook', type: 'error' });
+    let res = await removeItem(StoreKey, path);
+
+    console.log(res, "=====");
+    return;
+  }
   text.value = content;
   console.log(content, "=========content=======", path);
 }
