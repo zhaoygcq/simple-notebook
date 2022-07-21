@@ -32,6 +32,17 @@ const handleListClick = (evt) => {
   }
 }
 
+// 重置列表信息
+const updateForce = async (data) => {
+  state.list = data || [];
+  checkedItem.value = state.list[0];
+  await setData({key: StoreKey, val: [...state.list]});
+}
+
+
+defineExpose({updateForce})
+
+// 更新列表信息，并写入缓存
 const updateList = async (res) => {
   console.log(res, "======updateList=======");
   let store = await getData(StoreKey);

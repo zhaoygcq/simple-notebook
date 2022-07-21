@@ -16,7 +16,8 @@ import 'bytemd/dist/index.css';
 import 'highlight.js/styles/vs.css';
 import 'github-markdown-css';
 
-let props = defineProps(['currentPath'])
+let emits = defineEmits(['fileNotFound']);
+let props = defineProps(['currentPath']);
 const plugins = [math(), highlight(), gfm(), gemoji(), mediumZoom(), pdf()];
 const text = ref("");
 
@@ -46,7 +47,7 @@ const getContent = async (path) => {
     // 提示当前文件已经不存在了，并且需要从缓存中删除
     await message('File not found', { title: 'Simple-notebook', type: 'error' });
     let res = await removeItem(StoreKey, path);
-
+    emits('fileNotFound', res);
     console.log(res, "=====");
     return;
   }

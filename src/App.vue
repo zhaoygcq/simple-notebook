@@ -9,6 +9,7 @@ import { listenDoForFileApi } from "./api/file";
 
 const currentPath = ref('');
 const checked = ref('file');
+const listContainer = ref(null);
 const showList = ref(true);
 
 const handleCurrentPath = (path) => {
@@ -27,6 +28,12 @@ const changeActivityItem = (id) => {
 
 const toggleListStatus = () => {
   showList.value = !showList.value;
+}
+
+// 处理文件丢失的问题
+const handleFileNotFound = (data) => {
+  console.log("hanlde file not found", data, listContainer.value);
+  listContainer.value && listContainer.value.updateForce(data);
 }
 
 onMounted(() => {
@@ -49,6 +56,7 @@ onMounted(() => {
   </section>
   <section class="list" v-show="showList">
     <listVue
+      ref="listContainer"
       v-show="checked === 'file'"
       @itemclick="handleCurrentPath"
     />
@@ -60,7 +68,11 @@ onMounted(() => {
     <!-- 提纲区域 -->
   </section>
   <section class="content">
-    <editorVue v-if="currentPath" :current-path="currentPath"/>
+    <editorVue
+      v-if="currentPath"
+      :current-path="currentPath"
+      @file-not-found="handleFileNotFound"
+    />
     <div v-else></div>
   </section>
 </template>
