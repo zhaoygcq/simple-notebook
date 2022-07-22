@@ -35,7 +35,7 @@ const handleListClick = (evt) => {
 // 重置列表信息
 const updateForce = async (data) => {
   state.list = data || [];
-  checkedItem.value = state.list[0];
+  checkedItem.value = null;
   await setData({key: StoreKey, val: [...state.list]});
 }
 
@@ -54,7 +54,7 @@ const updateList = async (res) => {
   }
 
   // 设置当前新建文本为选中项
-  checkedItem.value = res.data;
+  showContent(res.data);
   state.list = [ ...currentData, ...state.list];
   if(Array.isArray(store)) {
     await setData({key: StoreKey, val: [...currentData, ...store]});

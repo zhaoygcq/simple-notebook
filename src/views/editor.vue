@@ -88,7 +88,7 @@ onMounted(async () => {
 
 watch(() => props.currentPath, async (newContent, oldContent) => {
   console.log(newContent, "========", oldContent);
-
+  text.value = "";
   await getContent(props.currentPath);
 })
 </script>
