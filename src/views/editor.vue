@@ -16,7 +16,7 @@ import 'bytemd/dist/index.css';
 import 'highlight.js/styles/vs.css';
 import 'github-markdown-css';
 
-let emits = defineEmits(['fileNotFound']);
+let emits = defineEmits(['fileNotFound', 'valueChange']);
 let props = defineProps(['currentPath']);
 const plugins = [math(), highlight(), gfm(), gemoji(), mediumZoom(), pdf()];
 const text = ref("");
@@ -29,7 +29,10 @@ const sanitize = (schema) => {
 // 保存文件内容
 const handleSave = debounce(async (content) => {
   try {
-    let res = await saveContentApi(props.currentPath, content);
+    await saveContentApi(props.currentPath, content);
+    let count = content && content.length || 0;
+    let modifiedTime = +new Date();
+    emits('valueChange', {count, modifiedTime});
   } catch (e) {
     console.log(e, "=====save error=====");
   }
@@ -37,7 +40,7 @@ const handleSave = debounce(async (content) => {
 
 const handleChange = (val) => {
   text.value = val;
-  console.log("change");
+  console.log("change", val);
   handleSave(val);
 }
 

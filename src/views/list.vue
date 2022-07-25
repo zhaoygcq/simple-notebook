@@ -40,11 +40,8 @@ const updateForce = async (data) => {
 }
 
 
-defineExpose({updateForce})
-
 // 更新列表信息，并写入缓存
 const updateList = async (res) => {
-  console.log(res, "======updateList=======");
   let store = await getData(StoreKey);
   let currentData = null;
   if(Array.isArray(res)) {
@@ -121,6 +118,15 @@ const ListenResEventMap = {
   create: handleListClick,
   empty: emptyWorkspace
 }
+
+const updateCheckItemInfo = (info) => {
+  let {count, modifiedTime} = info;
+  checkedItem.value.count = count;
+  checkedItem.value.createTime = modifiedTime;
+}
+
+// 将自组件的函数暴露给父组件调用
+defineExpose({updateForce, updateCheckItemInfo})
 
 
 onMounted(async() => {

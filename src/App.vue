@@ -32,8 +32,13 @@ const toggleListStatus = () => {
 
 // 处理文件丢失的问题
 const handleFileNotFound = (data) => {
-  console.log("hanlde file not found", data, listContainer.value);
   listContainer.value && listContainer.value.updateForce(data);
+}
+
+// 文件内容修改
+const handleEditorValChange = (info) => {
+  console.log("editor value change", info);
+  listContainer.value && listContainer.value.updateCheckItemInfo(info);
 }
 
 onMounted(() => {
@@ -71,6 +76,7 @@ onMounted(() => {
     <editorVue
       v-if="currentPath"
       :current-path="currentPath"
+      @value-change="handleEditorValChange"
       @file-not-found="handleFileNotFound"
     />
     <div v-else></div>
