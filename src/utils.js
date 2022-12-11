@@ -29,7 +29,6 @@ export function debounce(func, delay) {
     * update_time: 修改时间
 */
 export function handleFolderRes(res) {
-    console.log(res, "=======");
     const MdReg = /\.md$/;
     if (!res.length) {
         return res;
@@ -62,14 +61,12 @@ export async function getSearchRes(text, files) {
             let fileContent = await getContentApi(filePath);
             // 内容匹配
             let match = getMatchPosition(text, fileContent);
-            console.log(match);
             if (match.length > 0) {
                 res.push({
                     originDesc: originDesc,
                     origin: tempPath.pop(),
                     originPath: filePath,
                     desc: match.map(({ start, end }) => {
-                        console.log(start, end, "======fileContent", fileContent);
                         return fileContent.slice(start, end);
                     }),
                     position: match

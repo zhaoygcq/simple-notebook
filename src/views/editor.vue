@@ -40,7 +40,6 @@ const handleSave = debounce(async (content) => {
 
 const handleChange = (val) => {
   text.value = val;
-  console.log("change", val);
   handleSave(val);
 }
 
@@ -51,11 +50,9 @@ const getContent = async (path) => {
     await message('File not found', { title: 'Simple-notebook', type: 'error' });
     let res = await removeItem(StoreKey, path);
     emits('fileNotFound', res);
-    console.log(res, "=====");
     return;
   }
   text.value = content;
-  console.log(content, "=========content=======", path);
 }
 
 const uploadImg = (files) => {
@@ -71,17 +68,11 @@ const uploadImg = (files) => {
               resolve({title: "test"});
             }
           })
-          // var url = window.URL.createObjectURL(file);
-          // // TODO:
-          // return {
-          //   url
-          // }
         })
       )
 }
 
 onMounted(async () => {
-  console.log("======editor", props.currentPath);
   try {
     await getContent(props.currentPath);
   } catch (e) {
@@ -90,7 +81,6 @@ onMounted(async () => {
 })
 
 watch(() => props.currentPath, async (newContent, oldContent) => {
-  console.log(newContent, "========", oldContent);
   text.value = "";
   await getContent(props.currentPath);
 })
@@ -108,9 +98,16 @@ watch(() => props.currentPath, async (newContent, oldContent) => {
 </template>
 
 <style>
-.editor .bytemd {
+.editor {
   height: 100vh;
+}
+.bytemd {
+  height: 100%;
   text-align: left;
   border: 0;
+}
+
+.editor .bytemd-body {
+  flex: 1;
 }
 </style>

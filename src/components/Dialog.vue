@@ -32,7 +32,6 @@ const showFolderDialog = async () => {
     });
 
     folderpath.value = dirPath;
-    console.log(folderpath.value, "======file checked=====");
 }
 
 const cancel = () => {

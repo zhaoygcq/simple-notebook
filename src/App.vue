@@ -37,7 +37,6 @@ const handleFileNotFound = (data) => {
 
 // 文件内容修改
 const handleEditorValChange = (info) => {
-  console.log("editor value change", info);
   listContainer.value && listContainer.value.updateCheckItemInfo(info);
 }
 

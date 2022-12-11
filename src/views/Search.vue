@@ -21,11 +21,9 @@ const handleSearchValChange = debounce(async () => {
     if(!searchVal.value) return;
     showSearchRes.value = true;
     loadingStatus.value = true;
-    console.log(searchVal.value, "======searchVal change");
     // 进行内容搜索
     let allFiles = await getData("list");
     let res = await getSearchRes(searchVal.value, allFiles);
-    console.log(res, "======search res");
     loadingStatus.value = false;
     searchRes.list = res;
 }, 500)
@@ -33,7 +31,6 @@ const handleSearchValChange = debounce(async () => {
 
 // 搜索内容点击事件
 const handleSearchItemClick = (item) => {
-    console.log("=======search item click", item);
     emit('itemclick', item.originPath);
 }
 </script>

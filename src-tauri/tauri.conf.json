@@ -12,7 +12,13 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "fs": {
+        "all": true,
+        "scope": [
+          "*"
+        ]
+      }
     },
     "bundle": {
       "active": true,
@@ -56,10 +62,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 720,
         "resizable": true,
         "title": "simple-notebook",
-        "width": 800
+        "width": 1080
       }
     ]
   }

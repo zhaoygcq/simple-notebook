@@ -102,14 +102,12 @@ const showFolderDialog = async () => {
       defaultPath: "..",
       directory: true
     });
-    console.log("=======open-folder=====", dirPath)
     // 发送请求给tauri，让tauri去读取文件
     let res = await readFolderApi(dirPath);
     // 清空当前的工作区
     await emptyWorkspace();
     await updateList(res);
     // 更新列表项
-    console.log(res, "======file checked=====");
 }
 
 // 针对主进程发过来的信息作出的响应
