@@ -1,6 +1,6 @@
 [package]
 name = "simple-notebook"
-version = "0.0.2"
+version = "0.0.3"
 description = "a md editor built by vue3 and tauri"
 authors = ["zhaoygcq"]
 license = "MIT"
