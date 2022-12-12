@@ -1,4 +1,4 @@
-import { path, dialog, fs } from "@tauri-apps/api";
+import { path, dialog } from "@tauri-apps/api";
 import { writeBinaryFile, exists } from '@tauri-apps/api/fs';
 import html2canvas from "html2canvas";
 import * as icons from '@icon-park/svg'
